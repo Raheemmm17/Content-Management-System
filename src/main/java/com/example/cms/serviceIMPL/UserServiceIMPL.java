@@ -63,6 +63,7 @@ public class UserServiceIMPL implements UserService{
 					 .setData(mapToUserResponse(user)));
 		 }).orElseThrow(()->new UserNotFoundByIdException("User is not found"));
 	}
+	
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(int userId) {
 		return repository.findById(userId).map(u->{
