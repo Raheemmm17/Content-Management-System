@@ -28,10 +28,12 @@ public class User {
 	private String username;
 	private String email;
 	private String password;
+	private boolean deleted;
 	
 	@CreatedDate
 	@Column(updatable = false)
 	private  LocalDateTime createdAt;
 	@LastModifiedDate
 	private LocalDateTime lastModifiedAt;
+	
 }
