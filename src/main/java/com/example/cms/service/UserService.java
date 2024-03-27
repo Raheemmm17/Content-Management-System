@@ -9,5 +9,9 @@ import com.example.cms.utility.ResponseStructure;
 public interface UserService {
 	
 	public ResponseEntity<ResponseStructure<UserResponse>> registerUser(UserRequestDTO user);
+
+	public ResponseEntity<ResponseStructure<UserResponse>> deleteUser(int userId);
+
+	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(int userId);
 	
 }

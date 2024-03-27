@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.cms.UserDTO.UserRequestDTO;
 import com.example.cms.UserDTO.UserResponse;
 import com.example.cms.exception.EmailAlreadyPresentException;
+import com.example.cms.exception.UserNotFoundByIdException;
 import com.example.cms.model.User;
 import com.example.cms.repository.UserRepository;
 import com.example.cms.service.UserService;
@@ -40,12 +41,35 @@ public class UserServiceIMPL implements UserService{
 				.userId(user.getUserId())
 				.username(user.getUsername())
 				.email(user.getEmail())
+				.createdAt(user.getCreatedAt())
+				.lastModifiedAt(user.getLastModifiedAt())
 				.build();
 	}
 	private User mapToUser(UserRequestDTO userRequest, User user) {
 		user.setUsername(userRequest.getUsername());
 		user.setEmail(userRequest.getEmail());
+		user.setDeleted(false);
 		user.setPassword(password.encode(userRequest.getPassword()));
 		return user;
 	}
+	
+	@Override
+	public ResponseEntity<ResponseStructure<UserResponse>> deleteUser(int userId) {
+		 return repository.findById(userId).map(user -> {
+			 user.setDeleted(true);
+			 user = repository.save(user);
+			 return ResponseEntity.ok(structure.setStatusCode(HttpStatus.OK.value())
+					 .setMessage("Deleted successfully")
+					 .setData(mapToUserResponse(user)));
+		 }).orElseThrow(()->new UserNotFoundByIdException("User is not found"));
+	}
+	@Override
+	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(int userId) {
+		return repository.findById(userId).map(u->{
+			return ResponseEntity.ok(structure.setStatusCode(HttpStatus.OK.value())
+					.setMessage("User Found")
+					.setData(mapToUserResponse(u)));})
+				.orElseThrow(()-> new UserNotFoundByIdException("User Not Found by Id"));
+	}
+	
 }
