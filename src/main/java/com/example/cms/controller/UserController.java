@@ -27,7 +27,7 @@ public class UserController {
 		this.service = service;
 	}
 
-	@Operation(description = "This end point is for add the product", responses = {
+	@Operation(description = "This end point is for add the User", responses = {
 			@ApiResponse(responseCode = "200",description = "User saved successfully"),
 			@ApiResponse(responseCode = "404",description = "User not saved")})
 	@PostMapping("/users/register")
@@ -35,19 +35,19 @@ public class UserController {
 		return service.registerUser(user);
 	}
 	
+	@Operation(description = "This end point is for delete the User", responses = {
+			@ApiResponse(responseCode = "200",description = "User Deleted successfully"),
+			@ApiResponse(responseCode = "404",description = "User is not deleted")})
 	@DeleteMapping("users/{userId}")
 	public ResponseEntity<ResponseStructure<UserResponse>> deleteUser(@PathVariable int userId){
 		return service.deleteUser(userId);
 	}
 	
+	@Operation(description = "This end point is for add the User", responses = {
+			@ApiResponse(responseCode = "200",description = "User Found successfully"),
+			@ApiResponse(responseCode = "404",description = "User not found ")})
 	@GetMapping("users/{userId}")
 	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(@PathVariable int userId){
 		return service.findUniqueUser(userId);
-	}
-
-	
-	@GetMapping("/testing")
-	public String test() {
-		return "Hello Peter";
 	}
 }
