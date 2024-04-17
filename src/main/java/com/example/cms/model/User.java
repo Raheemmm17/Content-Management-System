@@ -31,14 +31,11 @@ public class User {
 	private String email;
 	private String password;
 	private boolean deleted;
-
 	@CreatedDate
 	@Column(updatable = false)
 	private  LocalDateTime createdAt;
 	@LastModifiedDate
 	private LocalDateTime lastModifiedAt;
-
 	@OneToMany(mappedBy = "user")
 	private List<Blog> blogs;
-
 }

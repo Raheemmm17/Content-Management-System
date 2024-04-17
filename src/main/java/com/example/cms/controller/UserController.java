@@ -27,27 +27,30 @@ public class UserController {
 		this.service = service;
 	}
 
-	@Operation(description = "This end point is for add the User", responses = {
+	@Operation(description = "This end point is for add the user", responses = {
 			@ApiResponse(responseCode = "200",description = "User saved successfully"),
 			@ApiResponse(responseCode = "404",description = "User not saved")})
 	@PostMapping("/users/register")
 	public ResponseEntity<ResponseStructure<UserResponse>> registerUser(@RequestBody @Valid UserRequestDTO user) {
 		return service.registerUser(user);
 	}
-	
-	@Operation(description = "This end point is for delete the User", responses = {
+	@Operation(description = "This end point is for delete the user", responses = {
 			@ApiResponse(responseCode = "200",description = "User Deleted successfully"),
-			@ApiResponse(responseCode = "404",description = "User is not deleted")})
+			@ApiResponse(responseCode = "404",description = "User not Deleted")})
 	@DeleteMapping("users/{userId}")
 	public ResponseEntity<ResponseStructure<UserResponse>> deleteUser(@PathVariable int userId){
 		return service.deleteUser(userId);
 	}
-	
-	@Operation(description = "This end point is for add the User", responses = {
+	@Operation(description = "This end point is for add the user", responses = {
 			@ApiResponse(responseCode = "200",description = "User Found successfully"),
-			@ApiResponse(responseCode = "404",description = "User not found ")})
+			@ApiResponse(responseCode = "404",description = "User not Found")})
 	@GetMapping("users/{userId}")
 	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(@PathVariable int userId){
 		return service.findUniqueUser(userId);
+	}
+
+	@GetMapping("/test")
+	public String test() {
+		return "Virat from cms";
 	}
 }
