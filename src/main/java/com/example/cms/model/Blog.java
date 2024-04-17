@@ -27,15 +27,15 @@ public class Blog {
 	private String title;
 	private String[] topics;
 	private String about;
-	
+
 	@ManyToOne
 	@JsonIgnore
 	private User user;
-	
+
 	@OneToMany(mappedBy = "blogs")
+	@JsonIgnore
 	private List<BlogPost> blogPosts;
 
-	
 	@OneToOne
 	private ContributionPanel contributionPanel;
 }

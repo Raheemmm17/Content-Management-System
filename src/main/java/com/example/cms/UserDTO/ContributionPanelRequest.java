@@ -11,5 +11,4 @@ import lombok.Setter;
 @Setter
 public class ContributionPanelRequest {
 	private List<User> contributors;
-
 }

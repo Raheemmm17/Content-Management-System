@@ -3,7 +3,7 @@ package com.example.cms.exception;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class BlogNotFoundByBlogIdException extends RuntimeException{
+public class NotAValidUserException extends RuntimeException{
 	private String message;
 
 	public String getMessage() {

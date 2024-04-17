@@ -16,23 +16,14 @@ import com.example.cms.repository.UserRepository;
 import com.example.cms.service.PanelService;
 import com.example.cms.utility.ResponseStructure;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class PanelServiceIMPL implements PanelService{
 	private Panelrepository contributionRepository;
-	private ResponseStructure<ContributionPanel> responseStrecture;
 	private UserRepository userRepository;
 	private ResponseStructure<ContributionPanelResponce> panelStructure;
-
-	public PanelServiceIMPL(Panelrepository contributionRepository,
-			ResponseStructure<ContributionPanel> responseStrecture, UserRepository userRepository,
-			ResponseStructure<ContributionPanelResponce> panelStructure, BlogRepository blogRepository) {
-		super();
-		this.contributionRepository = contributionRepository;
-		this.responseStrecture = responseStrecture;
-		this.userRepository = userRepository;
-		this.panelStructure = panelStructure;
-		this.blogRepository = blogRepository;
-	}
 
 	private BlogRepository blogRepository;
 
@@ -44,7 +35,7 @@ public class PanelServiceIMPL implements PanelService{
 				if(!blogRepository.existsByUserAndContributionPanel(owner,panel))
 					throw new IllegalAccessRequestException("Failed To Add Contributior");
 				return userRepository.findById(userId).map(contributor->{
-					panel.getUsers().add(contributor);
+					panel.getContributors() .add(contributor);
 					contributionRepository.save(panel);	
 
 					return ResponseEntity.ok(panelStructure.setStatusCode(HttpStatus.OK.value())
@@ -58,7 +49,7 @@ public class PanelServiceIMPL implements PanelService{
 
 	private ContributionPanelResponce mapToPanelResponse(ContributionPanel panel) {
 		ContributionPanelResponce responce = new ContributionPanelResponce();
-		responce.setContributors(panel.getUsers());
+		responce.setContributors(panel.getContributors());
 		responce.setPanelId(panel.getPanelId());
 		return responce;
 	}
@@ -72,7 +63,7 @@ public class PanelServiceIMPL implements PanelService{
 					throw new IllegalAccessRequestException("Failed to remove Contributor");
 
 				return userRepository.findById(userId).map(contributor ->{
-					if(panel.getUsers().remove(contributor)) {
+					if(panel.getContributors().remove(contributor)) {
 						contributionRepository.save(panel);
 						return ResponseEntity.ok(panelStructure.setStatusCode(HttpStatus.OK.value())
 								.setMessage("Contributor Removed Successfully")

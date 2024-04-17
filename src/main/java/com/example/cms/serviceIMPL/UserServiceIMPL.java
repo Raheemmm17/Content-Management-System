@@ -22,7 +22,7 @@ public class UserServiceIMPL implements UserService{
 
 	private UserRepository repository;
 	private ResponseStructure<UserResponse> structure;
-	
+
 	private PasswordEncoder password;
 
 	@Override
@@ -36,7 +36,7 @@ public class UserServiceIMPL implements UserService{
 				.setMessage("User registered successfully")
 				.setData(mapToUserResponse(user)));
 	}
-	
+
 	private UserResponse mapToUserResponse(User user) {
 		return UserResponse.builder()
 				.userId(user.getUserId())
@@ -68,6 +68,10 @@ public class UserServiceIMPL implements UserService{
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(int userId) {
 		return repository.findById(userId).map(u->{
+			if(u.isDeleted()==false)
+				return ResponseEntity.ok(structure.setStatusCode(HttpStatus.OK.value())
+						.setMessage("User Found")
+						.setData(mapToUserResponse(u)));
 			return ResponseEntity.ok(structure.setStatusCode(HttpStatus.OK.value())
 					.setMessage("User Found")
 					.setData(mapToUserResponse(u)));})

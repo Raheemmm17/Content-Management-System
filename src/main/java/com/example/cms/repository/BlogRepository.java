@@ -11,4 +11,5 @@ public interface BlogRepository extends JpaRepository<Blog, Integer>{
 	boolean existsByTitle(String title);
 
 	boolean existsByUserAndContributionPanel(User owner, ContributionPanel panel);
+
 }

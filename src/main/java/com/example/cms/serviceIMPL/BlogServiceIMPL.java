@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.cms.UserDTO.BlogRequest;
 import com.example.cms.UserDTO.BlogResponce;
-import com.example.cms.exception.BlogNotFoundByBlogIdException;
+import com.example.cms.exception.BlogNotFoundByIdException;
 import com.example.cms.exception.TitleNotAvailableException;
 import com.example.cms.exception.TopicNotSpecifiedException;
 import com.example.cms.exception.UserNotFoundByIdException;
@@ -70,7 +70,7 @@ public class BlogServiceIMPL implements BlogService{
 	@Override
 	public ResponseEntity<ResponseStructure<Boolean>> checkBlogTitleAvailaiblity(String title) {
 		return ResponseEntity.ok(bstructure.setStatusCode(HttpStatus.OK.value())
-				.setMessage(blogRepository.existsByTitle(title)?"Blog title already in used":"Blog title available")
+				.setMessage(blogRepository.existsByTitle(title)?"Blog title available":"Blog title already in used")
 				.setData(blogRepository.existsByTitle(title)));
 	}
 	@Override
@@ -79,7 +79,7 @@ public class BlogServiceIMPL implements BlogService{
 			return ResponseEntity.ok(structure.setStatusCode(HttpStatus.FOUND.value())
 					.setMessage("Blog is found successfully")
 					.setData(mapToBlogResponse(blog)));})
-				.orElseThrow(()->new BlogNotFoundByBlogIdException("Blog is not present with given Blog Id"));
+				.orElseThrow(()->new BlogNotFoundByIdException("Blog is not present with given Blog Id"));
 	}
 
 	private Blog mapToBlogEntity(BlogRequest blogRequest,Blog exBlog) {
