@@ -24,25 +24,28 @@ public class UserServiceIMPL implements UserService{
 
 	private UserRepository repository;
 	private ResponseStructure<UserResponse> structure;
+
 	private PasswordEncoder password;
-	
 
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> registerUser(UserRequestDTO userRequest) {
 		if(repository.existsByEmail(userRequest.getEmail()))
 			throw new EmailAlreadyPresentException("Failed to register");
-		
+
 		User user = repository.save(mapToUser(userRequest, new User()));
-		
+
 		return ResponseEntity.ok(structure.setStatusCode(HttpStatus.OK.value())
-				             				.setMessage("User registered successfully")
-				             				.setData(mapToUserResponse(user)));
+				.setMessage("User registered successfully")
+				.setData(mapToUserResponse(user)));
 	}
+
 	private UserResponse mapToUserResponse(User user) {
 		return UserResponse.builder()
 				.userId(user.getUserId())
 				.username(user.getUsername())
 				.email(user.getEmail())
+				.createdAt(user.getCreatedAt())
+				.lastModifiedAt(user.getLastModifiedAt())
 				.build();
 	}
 	private User mapToUser(UserRequestDTO userRequest, User user) {
@@ -52,18 +55,18 @@ public class UserServiceIMPL implements UserService{
 		user.setPassword(password.encode(userRequest.getPassword()));
 		return user;
 	}
-	
+
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> deleteUser(int userId) {
-		 return repository.findById(userId).map(user -> {
-			 user.setDeleted(true);
-			 user = repository.save(user);
-			 return ResponseEntity.ok(structure.setStatusCode(HttpStatus.OK.value())
-					 .setMessage("Deleted successfully")
-					 .setData(mapToUserResponse(user)));
-		 }).orElseThrow(()->new UserNotFoundByIdException("User is not found"));
+		return repository.findById(userId).map(user -> {
+			user.setDeleted(true);
+			user = repository.save(user);
+			return ResponseEntity.ok(structure.setStatusCode(HttpStatus.OK.value())
+					.setMessage("Deleted successfully")
+					.setData(mapToUserResponse(user)));
+		}).orElseThrow(()->new UserNotFoundByIdException("User is not found"));
 	}
-	
+
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> findUniqueUser(int userId) {
 		return repository.findById(userId).map(u->{

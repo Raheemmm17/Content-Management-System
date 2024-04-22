@@ -34,7 +34,6 @@ public class UserController {
 	public ResponseEntity<ResponseStructure<UserResponse>> registerUser(@RequestBody @Valid UserRequestDTO user) {
 		return service.registerUser(user);
 	}
-
 	@Operation(description = "This end point is for delete the user", responses = {
 			@ApiResponse(responseCode = "200",description = "User Deleted successfully"),
 			@ApiResponse(responseCode = "404",description = "User not Deleted")})
@@ -42,7 +41,6 @@ public class UserController {
 	public ResponseEntity<ResponseStructure<UserResponse>> deleteUser(@PathVariable int userId){
 		return service.deleteUser(userId);
 	}
-
 	@Operation(description = "This end point is for add the user", responses = {
 			@ApiResponse(responseCode = "200",description = "User Found successfully"),
 			@ApiResponse(responseCode = "404",description = "User not Found")})

@@ -28,6 +28,7 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {//httpSecurity help us to build security filter object
 		return httpSecurity.csrf(csrf->csrf.disable())							
+				.authorizeHttpRequests(auth->auth.requestMatchers("/blogs/{blogId}/blog-posts","/blog-posts/{postId}/publishes","/users/{userId}/contribution-panels/{panelId}","/blogs/{blogId}","/titles/{title}/blogs","/users/register","/users/{userId}","/users/{userId}/blogs","/blogs/{blogId}")
 				.authorizeHttpRequests(auth->auth.requestMatchers("/users/register","/users/{userId}")
 						.permitAll()//permit all the user
 						.anyRequest()
